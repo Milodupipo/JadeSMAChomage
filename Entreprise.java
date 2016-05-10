@@ -72,8 +72,7 @@ public class Entreprise extends Agent {
                             ACLMessage message = new ACLMessage(ACLMessage.INFORM);
                             message.addReceiver(new AID("chomeur1", AID.ISLOCALNAME));    
                             message.setContent("{\"accepter\":true,"+"\"idPoste\":" + ligne.get("idPoste") + "," + "\"chomeur\":\"" +  ligne.get("chomeur") + "\"}");
-                            System.out.println(message);
-                            System.out.println("L'entreprise a accepté le profile du chomeur. Il l'envoie message^^");
+                            System.out.println("L'entreprise "+msg.getSender().getName().split("@")+" a accepté le profile du chomeur "+ ligne.get("chomeur") +". Il l'envoie message^^");
                             send(message);
               
                     }catch (ParseException ex) {

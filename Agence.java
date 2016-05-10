@@ -41,17 +41,20 @@ public class Agence extends Agent {
                 ACLMessage message = new ACLMessage(ACLMessage.INFORM);
                 for (Entry<String, Vector< Vector< Integer>>> entreprise : tabEntreprises.entrySet()) {
                     for (Vector< Integer> emploi : entreprise.getValue()) {
-                        for (Entry<String, Vector< Integer>> chomeur : tabPersonnes.entrySet()) {
-                            //si domaine == domaine et experience requise < experience chomeur
-                            if (emploi.get(1) == chomeur.getValue().get(0)) {
-                                message.addReceiver(new AID(entreprise.getKey(), AID.ISLOCALNAME));
-                                message.setContent("{\"idPoste\": " + emploi.get(0) + ",\"chomeur\":\"" + chomeur.getKey() + "\"}");
-                                System.out.println("L'agence à trouvé un job pour quelqu'un !");
-                                 System.out.println(message);
-                                send(message);
-                               break ;
+                        if(emploi != null )
+                        {
+                             for (Entry<String, Vector< Integer>> chomeur : tabPersonnes.entrySet()) {
+                                //si domaine == domaine et experience requise < experience chomeur
+                                if (emploi.get(1) == chomeur.getValue().get(0)) {
+                                    message.addReceiver(new AID(entreprise.getKey(), AID.ISLOCALNAME));
+                                    message.setContent("{\"idPoste\": " + emploi.get(0) + ",\"chomeur\":\"" + chomeur.getKey() + "\"}");
+                                    System.out.println("L'agence à trouvé un job pour quelqu'un !");
+                                    send(message);
+                                   break ;
+                                }
                             }
                         }
+                       
                     }
                 }
             }
@@ -65,10 +68,8 @@ public class Agence extends Agent {
                     try {
                         //Ajoute une entreprise
                         String decodage = msg.getContent();
-                        System.out.println(msg.getSender().getName().split("@")[0].split("(?<=\\D)(?=\\d)|(?<=\\d)(?=\\D)")[0]);
                         if (msg.getSender().getName().split("@")[0].split("(?<=\\D)(?=\\d)|(?<=\\d)(?=\\D)")[0].compareTo("chomeur") != 0)
                         {
-                            System.out.println("decodage:" + decodage);
                             JSONParser parser = new JSONParser();
                             //nom de l'entreprise à parser
                             JSONArray tableau = (JSONArray) parser.parse(decodage);
@@ -92,9 +93,15 @@ public class Agence extends Agent {
                             //Si un job est accepté on supprime le chomeur de la liste
                             //Sinon le chomeur veut s'inscrire
                             if (jobAccepter) {
+                                System.out.println("Le chomeur "+msg.getSender().getName().split("@")[0]+" a accepté son travail idPoste"+ligne.get("idPoste")+", il est désinscrie");
+                                System.out.println("****** TABLE PERSONNES :" + tabPersonnes ); 
+                                System.out.println("****** LIGNE :" + ligne ); 
+                                System.out.println("****** personne remove  :" + msg.getSender().getName().split("@")[0] ); 
                                 tabPersonnes.remove(msg.getSender().getName().split("@")[0]);
-                                tabEntreprises.get((String) ligne.get("entreprise")).remove(((int) (long) ligne.get("idPoste")));
-                                System.out.println("Le chomeur a accepté son travail, il est désinscrie");
+                               // tabPersonnes.get((String) ligne.get("chomeur")).set((int) (long) ligne.get("chomeur"), null);
+                              //  tabEntreprises.get((String) ligne.get("entreprise")).remove(((int) (long) ligne.get("idPoste")));
+                                tabEntreprises.get((String) ligne.get("entreprise")).set((int) (long) ligne.get("idPoste"), null);
+                                
                             } else {
                                 //Ajoute une personne à la liste avec son domaine d'expertise et son expérience
                                 //parser le nom de l'expéditeur

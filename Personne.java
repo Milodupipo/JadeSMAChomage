@@ -73,19 +73,16 @@ public class Personne extends Agent {
                     try {
                         //Ajoute une entreprise
                         String decodage = msg.getContent();
-                        System.out.println(decodage);
                         // Si Pole emploi envoie message qu'il a trouvé quelq'un pour un poste 
                         // Envoyer message au chomeur envoyé par Pole emploi pour informer l'entreprise a accepté son profil et attendre sa réponde
                         if (msg.getSender().getName().split("@")[0].split("(?<=\\D)(?=\\d)|(?<=\\d)(?=\\D)")[0].compareTo("entreprise") == 0) {
-                            System.out.println("decodage Personne:" + decodage);
                             JSONParser parser = new JSONParser();
                             JSONObject ligne = (JSONObject) parser.parse(decodage);
                             ACLMessage message = new ACLMessage(ACLMessage.INFORM);
                             message.addReceiver(new AID("PoleEmploi", AID.ISLOCALNAME));
                             message.setContent("{\"accepter\": true," + " \"entreprise\":\"" + msg.getSender().getName().split("@")[0] + "\"," + "\"idPoste\":" + ligne.get("idPoste") + "}");
-                            System.out.println("Le chomeur a accepté le poste^^");
                             send(message);
-
+                            System.out.println("Le chomeur "+msg.getSender().getName().split("@")+" a accepté le poste^^");
                         }
 
                     } catch (ParseException ex) {
