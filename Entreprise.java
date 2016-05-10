@@ -80,7 +80,7 @@ public class Entreprise extends Agent {
                         Logger.getLogger(Agence.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }
-                block();
+                else block();
 
             }
         });
