@@ -36,7 +36,8 @@ public class SmaJadeTest {
             pc.setParameter(ProfileImpl.MAIN_HOST, "localhost");
             AgentContainer ac = rt.createAgentContainer(pc);
             
-            AgentController entrepriseA = ac.createNewAgent("entreprise1", "smajadetest.Entreprise", new Object[]{});
+            AgentController entrepriseA = ac.createNewAgent("entreprise1", "smajadetest.Entreprise", 
+                    new Object[]{"[{\"idPoste\": 0, \"domaine\": 3, \"exp\": 2}, {\"idPoste\": 1, \"domaine\": 0, \"exp\": 4}, {\"idPoste\": 2, \"domaine\": 0, \"exp\": 7}]"});
 
             AgentController personneA = ac.createNewAgent("chomeur1", "smajadetest.Personne", new Object[]{"{\"accepter\": false, \"domaine\": 0, \"exp\": 7}"});
             AgentController personneB = ac.createNewAgent("chomeur2", "smajadetest.Personne", new Object[]{"{\"accepter\": false, \"domaine\": 3, \"exp\": 7}"});
