@@ -22,10 +22,6 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-/**
- *
- * @author Mickael
- */
 public class Entreprise extends Agent {
 
     private String secteur;
@@ -40,25 +36,23 @@ public class Entreprise extends Agent {
         ACLMessage message = new ACLMessage(ACLMessage.INFORM);
         message.addReceiver(new AID("PoleEmploi", AID.ISLOCALNAME));
         Vector< Vector<Integer>> postes = new Vector< Vector<Integer>>();
-        
+
         if (args != null) {
             try {
                 JSONParser parser = new JSONParser();
                 JSONArray tableau = (JSONArray) parser.parse((String) args[0]);
                 for (int i = 0; i < tableau.size(); i++) {
                     JSONObject ligne = (JSONObject) tableau.get(i);
-                    for (int j = 0; j < ligne.size(); j++) {
-                        postes.add(new Vector<Integer>());
-                        postes.get(j).add((int)(long) ligne.get("domaine"));
-                        postes.get(j).add((int)(long) ligne.get("exp"));
-                    }
+                    postes.add(new Vector<Integer>());
+                    postes.get(i).add((int) (long) ligne.get("domaine"));
+                    postes.get(i).add((int) (long) ligne.get("exp"));
                 }
             } catch (ParseException ex) {
                 Logger.getLogger(Entreprise.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
 
-        String c = (String)args[0];
+        String c = (String) args[0];
         message.setContent(c);
         send(message);
 
@@ -75,9 +69,9 @@ public class Entreprise extends Agent {
                         JSONParser parser = new JSONParser();
                         JSONObject ligne = (JSONObject) parser.parse(contenuMessage);
                         ACLMessage message = new ACLMessage(ACLMessage.INFORM);
-                        message.addReceiver(new AID((String)ligne.get("chomeur"), AID.ISLOCALNAME));
+                        message.addReceiver(new AID((String) ligne.get("chomeur"), AID.ISLOCALNAME));
                         //recupere l'experience d'un poste
-                        int experience = postes.get((int)(long)ligne.get("idPoste")).get(1);
+                        int experience = postes.get((int) (long) ligne.get("idPoste")).get(1);
                         message.setContent("{\"accepter\":true," + "\"idPoste\":" + ligne.get("idPoste") + "," + "\"chomeur\":\"" + ligne.get("chomeur") + "\", \"experience\":" + experience + "}");
                         send(message);
 
