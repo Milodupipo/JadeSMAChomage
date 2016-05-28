@@ -23,36 +23,34 @@ public class SmaJadeTest {
 
     public static void main(String[] args) {
         try {
-            /*Runtime rt = Runtime.instance();
-             Properties p = new ExtendedProperties();
-             p.setProperty("gui", "true");
-             ProfileImpl pc = new ProfileImpl(p);
-             AgentContainer c = rt.createAgentContainer(pc);
-             c.start();*/
             Runtime rt = Runtime.instance();
-            ProfileImpl pc = new ProfileImpl(false);
+             Properties p = new ExtendedProperties();
+             p.setProperty("gui", "false");
+             ProfileImpl pc = new ProfileImpl(p);
+             
+           // Runtime rt = Runtime.instance();
+           // ProfileImpl pc = new ProfileImpl(false);
             pc.setParameter(ProfileImpl.MAIN_HOST, "localhost");
             AgentContainer ac = rt.createAgentContainer(pc);
 
             AgentController entrepriseA = ac.createNewAgent("entreprise1", "smajadetest.Entreprise",
-                    new Object[]{"[{\"idPoste\": 0, \"domaine\": 0, \"exp\": 2}, "
-                        + "{\"idPoste\": 1, \"domaine\": 0, \"exp\": 5}, " 
+                    new Object[]{"[{\"idPoste\": 0, \"domaine\": 0, \"exp\": 3}, "
+                        + "{\"idPoste\": 1, \"domaine\": 0, \"exp\": 5}, "
                         + "{\"idPoste\": 2, \"domaine\": 0, \"exp\": 7}, "
-                        + "{\"idPoste\": 3, \"domaine\": 1, \"exp\": 3},"
-                        + "{\"idPoste\": 4, \"domaine\": 1, \"exp\": 7},"
-                        + "{\"idPoste\": 5, \"domaine\": 1, \"exp\": 2},"
-                        + "{\"idPoste\": 6, \"domaine\": 2, \"exp\": 2},"
-                        + "{\"idPoste\": 7, \"domaine\": 2, \"exp\": 4},"
-                        + "{\"idPoste\": 8, \"domaine\": 2, \"exp\": 6},"
-                        + "{\"idPoste\": 9, \"domaine\": 2, \"exp\": 8}]"});
+                        + "{\"idPoste\": 3, \"domaine\": 0, \"exp\": 9},"
+                        + "{\"idPoste\": 4, \"domaine\": 0, \"exp\": 11},"
+                        + "{\"idPoste\": 5, \"domaine\": 1, \"exp\": 3},"
+                        + "{\"idPoste\": 6, \"domaine\": 1, \"exp\": 5},"
+                        + "{\"idPoste\": 7, \"domaine\": 1, \"exp\": 7},"
+                        + "{\"idPoste\": 8, \"domaine\": 1, \"exp\": 9},"
+                        + "{\"idPoste\": 9, \"domaine\": 1, \"exp\": 11}]"});
 
             AgentController agence = ac.createNewAgent("PoleEmploi", "smajadetest.Agence", new Object[]{});
 
-            AgentController tabAgent[] = new AgentController[15];
-            for (int i = 0; i < tabAgent.length; i++) {
-                int domaine = ThreadLocalRandom.current().nextInt(0, 2 + 1);
-                int exp = ThreadLocalRandom.current().nextInt(2, 8 + 1);
-                tabAgent[i] = ac.createNewAgent("chomeur" + i, "smajadetest.Personne", new Object[]{"{\"accepter\": false, \"demissionner\": false, \"domaine\": " + domaine + ", \"exp\": " + exp + "}"});
+            AgentController tabAgent[] = new AgentController[12];
+            for (int i = 0; i < tabAgent.length; i += 2) {
+                tabAgent[i] = ac.createNewAgent("chomeur" + i, "smajadetest.Personne", new Object[]{"{\"accepter\": false, \"demissionner\": false, \"domaine\": " + 0 + ", \"exp\": " + (i+1) + "}"});
+                tabAgent[i+1] = ac.createNewAgent("chomeur" + (i+1), "smajadetest.Personne", new Object[]{"{\"accepter\": false, \"demissionner\": false, \"domaine\": " + 1 + ", \"exp\": " + (i+1) + "}"});
             }
 
             agence.start();

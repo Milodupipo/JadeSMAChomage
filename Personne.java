@@ -19,7 +19,6 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-
 public class Personne extends Agent {
 
     private String inscription = "";
@@ -43,10 +42,9 @@ public class Personne extends Agent {
                 inscription = (String) args[0];
                 JSONParser parser = new JSONParser();
                 JSONObject ligne = (JSONObject) parser.parse((String) args[0]);
-                for (int j = 0; j < ligne.size(); j++) {
-                    competence.add((int) (long) ligne.get("domaine"));
-                    competence.add((int) (long) ligne.get("exp"));
-                }
+                competence.add((int) (long) ligne.get("domaine"));
+                competence.add((int) (long) ligne.get("exp"));
+
             } catch (ParseException ex) {
                 Logger.getLogger(Entreprise.class.getName()).log(Level.SEVERE, null, ex);
             }

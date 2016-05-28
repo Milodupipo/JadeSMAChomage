@@ -105,11 +105,11 @@ public class Agence extends Agent {
                                     for (int i = 0; i < postes.size(); i++) {
                                         if (postes.get(i).get(0) == (int) (long) ligne.get("idPoste")) {
                                             tabEntreprises.get((String) ligne.get("entreprise")).get(i).set(3, 0);
+                                            break;
                                         }
                                     }
                                 } else {
                                     //Ajoute une personne à la liste avec son domaine d'expertise et son expérience
-                                    //parser le nom de l'expéditeur
                                     //Soit la personne est deja connue de pole emploi et on l'ajoute soit on la connait deja et on modifie son statut en recherche d'emploi
                                     if (!tabPersonnes.containsKey(msg.getSender().getName().split("@")[0])) {
                                         tabPersonnes.put(msg.getSender().getName().split("@")[0], new Vector<Integer>());
@@ -137,6 +137,7 @@ public class Agence extends Agent {
         }
         );
 
+        //Génère des petites statistiques sur le nombre d'emplois et la situation des personnes
         addBehaviour(new TickerBehaviour(this, 100) {
             @Override
             protected void onTick() {
